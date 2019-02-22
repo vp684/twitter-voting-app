@@ -29,6 +29,10 @@ if (process.env.NODE_ENV === 'production') {
     if(err){
         //handle db error.  front end shouldnt be able to login etc...
         console.log('Database error: ' + err)
+        app.get('/api/data', (req, res)=>{
+            console.log(err)
+            res.send({data: "db error"})               
+        })
     }else{
         // connected to db...
         //get db
@@ -36,9 +40,9 @@ if (process.env.NODE_ENV === 'production') {
 
         //routes
         app.get('/api/data', (req, res)=>{
-            res.send({data: `this is from the API `})               
+            res.send({data: `this is from the API  `})               
         })
-
+        
 
     }
 
