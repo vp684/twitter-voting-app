@@ -1,0 +1,28 @@
+{
+  "name": "voting-app",
+  "version": "1.0.0",
+  "description": "voting app using MERN stack.",
+  "main": "server.js",
+  "engines": {
+    "node": "11.10.0", 
+    "npm": "6.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server":"nodemon server.js", 
+    "client": "npm start --prefix client", 
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+    
+  },
+  "author": "Viraj Patel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
+  }
+}
