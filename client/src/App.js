@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Navbar from './components/navbar/navbar'
 
 class App extends Component {
   state = {
@@ -32,6 +33,7 @@ class App extends Component {
 
     return (
       <div className="App">
+      <Navbar />
         {this.state.test}
       </div>
     );
