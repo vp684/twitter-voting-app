@@ -24,30 +24,32 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
+   //connect to db on err report to user no functionality
+   mongo.connect(process.env.MLAB_URI, {useNewUrlParser: true}, (err, db)=>{
+    if(err){
+        //handle db error.  front end shouldnt be able to login etc...
+        console.log('Database error: ' + err)
+    }else{
+        // connected to db...
+        //get db
+        let database = db.db('fcc')
+
+        //routes
+        app.get('/api/data', (req, res)=>{
+            res.send({data: `this is from the API `})               
+        })
+
+
+    }
+
+})
+
 app.listen(port, ()=>{
 
-    console.log(`server started on port: ${port}`)
+    console.log(`server started on port`)
     //api server started
 
-    //connect to db on err report to user no functionality
-    mongo.connect(process.env.MLAB_URI, {useNewUrlParser: true}, (err, db)=>{
-        if(err){
-            //handle db error.  front end shouldnt be able to login etc...
-            console.log('Database error: ' + err)
-        }else{
-            // connected to db...
-            //get db
-            let database = db.db('fcc')
-
-            //routes
-            app.get('/api/data', (req, res)=>{
-                res.send({data: `this is from the API `})               
-            })
-    
-    
-        }
-    
-    })
+ 
 
 })
 
