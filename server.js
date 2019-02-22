@@ -10,7 +10,7 @@ const app = express();
 
 app.get('/api/data', (req, res)=>{
 
-    res.send({test: 'this is from the API'})
+    res.send({data: 'this is from the API'})
 })
 
 //send back React's index.html file.
