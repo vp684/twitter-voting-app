@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const helmet = require('helmet')
-const mongo = require('mongodb')
+const mongo = require('mongodb').MongoClient
 
 
 //load env variables
