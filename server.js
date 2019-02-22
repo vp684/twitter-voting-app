@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const helmet = require('helmet')
 
 
 
@@ -7,6 +8,8 @@ const path = require('path');
 const port = process.env.PORT || 5000;
 
 const app = express();
+//use helmet defaults
+app.use(helmet())
 
 app.get('/api/data', (req, res)=>{
 
