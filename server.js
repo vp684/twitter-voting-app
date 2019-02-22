@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 //use helmet defaults
-app.use(helmet())
+//app.use(helmet())
 let dberr = null
 
 
