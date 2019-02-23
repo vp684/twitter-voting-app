@@ -8,7 +8,7 @@ class App extends Component {
   }
 
   auth = async ()=>{
-    const response = await fetch('/api/data');
+    const response = await fetch('/auth/twitter');
     const body = await response.json();
     //mongdb error here...
     if(response.status !== 200) throw Error(body.message)
@@ -34,8 +34,8 @@ class App extends Component {
 
     return (
       <div className="App">
-      <Navbar />
-        {this.state.test}
+      <Navbar />      
+         <a href="/auth/twitter">Sign in with Twitter</a> 
       </div>
     );
   }

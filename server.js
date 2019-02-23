@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
     try{
         //awaiting for db or error, then enable appropritate routes. no functionality with out db
         let dbase = await db()       
-        router.use(require('./routes/routes')(null, dbase))
+        router.use(require('./routes/routes')(null, dbase, app))
 
     }catch(err){
         console.log(err)      
