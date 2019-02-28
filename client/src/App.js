@@ -55,9 +55,9 @@ class App extends Component {
           <Navbar />              
 
            
-            <TwitterLogin loginUrl="https://voting-app-vp.herokuapp.com/auth/twitter/callback"
+            <TwitterLogin loginUrl="https://voting-app-vp.herokuapp.com:5000/auth/twitter/callback"
               onFailure={this.onFailed} onSuccess={this.onSuccess}
-              requestTokenUrl="https://voting-app-vp.herokuapp.com/auth/twitter"/>        
+              requestTokenUrl="https://voting-app-vp.herokuapp.com:5000/auth/twitter"/>        
                 
         </div>  
 
