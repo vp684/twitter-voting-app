@@ -16,8 +16,6 @@ const app = express();
 //use helmet defaults
 app.use(helmet())
 
-
-
 if (process.env.NODE_ENV === 'production') {
     // Serve any static files
     app.use(express.static(path.join(__dirname, 'client/build')));
@@ -40,9 +38,11 @@ if (process.env.NODE_ENV === 'production') {
     }    
     //add routes
     app.use(router)
+
+    
     //start server
     app.listen(port, ()=>{
-        console.log(`server started on port`)
+        console.log(`server started on port ${port}`)
         //api server started
     })
 

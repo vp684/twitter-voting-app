@@ -7,6 +7,7 @@ function route(err, db, app){
         // router.use('*', (req, res)=>{
         //     res.send({data:"Database is down no app."})
         // })
+        console.log(err)
     }else{
         const auth = require('./auth/auth')(db, app)
         router.use(auth)
