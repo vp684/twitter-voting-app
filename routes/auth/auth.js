@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();    
 }else{
   //
-  homeurl = ''//  set to heroku app address
+  homeurl = 'https://voting-app-vp.herokuapp.com'//  set to heroku app address
 }
 
 function route(db, app){ 
@@ -68,7 +68,7 @@ function route(db, app){
     res.setHeader('x-auth-token', req.token);
     console.log(res.getHeaders())
     
-    return res.redirect('http://localhost:3000');
+    return res.redirect(homeurl);
   };
 
   
