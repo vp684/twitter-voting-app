@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import { withStyles } from '@material-ui/core/styles';
-//import Navbar from './components/navbar/Navbar';
 import AllPolls from './components/polls/AllPolls';
 import SinglePollView from './components/polls/SinglePollView';
 import AuthPollView from './components/user/AuthPollView';
 import CreatePoll from './components/user/CreatePoll';
+import Navbar from './components/navbar/Navbar';
 
 import { Route } from "react-router-dom";
 
