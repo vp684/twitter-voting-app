@@ -4,16 +4,16 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
+
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+
 import { withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
-
+import LoginModal from './login/LoginModal'
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Button } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -27,49 +27,14 @@ const styles = theme => ({
     marginRight: 20,
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    display: 'block'
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.10),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.30),
-    },
-    marginRight: theme.spacing.unit * 2,
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing.unit * 3,
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing.unit * 9,
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-    width: '100%',
-  },
-  inputInput: {
-    paddingTop: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 10,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
+ 
+ 
+
+  login:{
+    marginRight: theme.spacing.unit,
+    color:'inherit'
   },
   sectionDesktop: {
     display: 'none',
@@ -88,8 +53,10 @@ const styles = theme => ({
 class PrimarySearchAppBar extends React.Component {
   state = {
     anchorEl: null,
-    mobileMoreAnchorEl: null,
+    mobileMoreAnchorEl: null
   };
+
+  
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -108,11 +75,34 @@ class PrimarySearchAppBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  logOut = () => {
+    console.log('we logged out')
+    window.fetch('/auth/logout').then(()=>{
+      this.props.checkLogIn()
+    })         
+    return this.handleMenuClose()               
+   
+  }
+
+  createpollURL = () =>{
+      this.props.history.push('/createpoll')
+  }
+  
+  goToUserPoll = ()=>{
+    this.props.history.push('/userpolls')
+  }
+
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const menuItems = (
+    
+        <MenuItem onClick={this.logOut}>Log Out</MenuItem> 
+     
+    )
 
     const renderMenu = (
       <Menu
@@ -121,9 +111,10 @@ class PrimarySearchAppBar extends React.Component {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
         onClose={this.handleMenuClose}
-      >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+      >                      
+      {this.props.isLoggedIn &&
+        menuItems     
+      }        
       </Menu>
     );
 
@@ -136,52 +127,74 @@ class PrimarySearchAppBar extends React.Component {
         onClose={this.handleMenuClose}
       >
        
-        <MenuItem onClick={this.handleProfileMenuOpen}>
+        <MenuItem onClick={this.handleMenuClose}>
           <IconButton color="inherit">
             <AccountCircle />
           </IconButton>
-          <p>Profile</p>
+          <p>My Polls</p>
+        </MenuItem>
+
+        <MenuItem onClick={this.logOut}>
+          <IconButton color="inherit">
+            <AccountCircle />
+          </IconButton>
+          <p>Logout</p>
         </MenuItem>
       </Menu>
     );
 
+
+
+    const userPollButtons = (
+      <div>
+        <Button onClick={this.createpollURL}>
+          Create Poll
+        </Button>
+        <Button onClick={this.goToUserPoll}>
+          My Polls
+        </Button>
+      </div>    
+    )
+
+      
+
     return (
+      
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>            
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              Voting App
-            </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search for polls…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-            </div>
+          <Toolbar>
+            <Button href="/">
+              <Typography className={classes.title} variant="h6" color="inherit">
+                Voting App
+              </Typography>  
+            </Button>                 
+
             <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              
+
+            {!this.props.isLoggedIn && <LoginModal checkLogIn={this.props.checkLogIn} />}  
+            {this.props.isLoggedIn && userPollButtons}  
+            
+            
+
+            <div className={classes.sectionDesktop}>              
               <IconButton
                 aria-owns={isMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
-                onClick={this.handleProfileMenuOpen}
+                onClick={this.props.isLoggedIn ? this.handleProfileMenuOpen : null}
                 color="inherit"
               >
                 <AccountCircle />
               </IconButton>
             </div>
+
             <div className={classes.sectionMobile}>
-              <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+              <IconButton aria-haspopup="true" onClick={this.props.isLoggedIn ? this.handleMobileMenuOpen : null} color="inherit">
                 <MoreIcon />
               </IconButton>
             </div>
+
           </Toolbar>
+          
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
@@ -192,6 +205,7 @@ class PrimarySearchAppBar extends React.Component {
 
 PrimarySearchAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  isLoggedIn: PropTypes.bool
 };
 
 export default withStyles(styles)(PrimarySearchAppBar);

@@ -1,4 +1,6 @@
 const mongo = require('mongodb').MongoClient
+const mongoose = require('mongoose')
+var Schema = mongoose.Schema;
 var database =  null
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
@@ -8,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 function connect(){
 
     return new Promise((resolve, reject)=>{
+    
       
         if(database){
             //already connected to db 
@@ -16,20 +19,36 @@ function connect(){
            
        }else{
            console.log('connecting db')
-           mongo.connect(process.env.MLAB_URI, {useNewUrlParser: true}, (err, db)=>{
-            if(err){
-                //handle db error.  front end shouldnt be able to login etc...
-                console.log('Database error: ' + err)
-                reject(err)
-            }else{
-                // connected to db...
-                database = db.db('fcc');       
+           mongoose.connect(process.env.MLAB_URI, {useNewUrlParser: true}).then(()=>{
+               //mongoose connect resolves to undefined set db manually
                 console.log('new db resolved')
-                resolve(database)                     
-            }
-        })   
-           
-       }
+                var voteSchema = new Schema({             
+
+                    userId: String, //twitter id or local user name
+                    userName: String, //twitter name also local username.
+                    password: String, // local user pw
+
+                    polls: [{ 
+                        _id: false,
+                        name: String, //name of poll
+                        url: String,
+                        ips:[String], //list of ips that have already voted for this poll, votes limited to one per ip
+                        choices: [{  
+                            _id:false,
+                            name: String, //name of voting option
+                            count: Number //  number of times this option has been submitted. 
+                        }]
+                    }]
+                
+                })
+                var doc = mongoose.model('User', voteSchema)    
+
+                resolve(doc)
+           },(err)=>{
+               console.log('Database error:' + err)
+               reject(err)
+            })           
+        }
        
 
     })

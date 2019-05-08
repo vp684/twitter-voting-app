@@ -1,74 +1,69 @@
 import React, { Component } from 'react';
 import './App.css';
-import Navbar from './components/navbar/navbar'
-import TwitterLogin from './components/navbar/Twitterlogin'
+import { withStyles } from '@material-ui/core/styles';
+import Navbar from './components/navbar/Navbar'
+import AllPolls from './components/polls/AllPolls';
+import SinglePollView from './components/polls/SinglePollView'
+import AuthPollView from './components/user/AuthPollView'
+import CreatePoll from './components/user/CreatePoll'
+
+import { Route } from "react-router-dom";
+
+
+const styles = theme => ({
+  //no styles yet   
+  main:{
+    display:'flex',
+    justifyContent:'center'
+  }
+  
+})
 
 class App extends Component {
+
+
   state = {
-    test: null, 
-    isAuthenticated: false,
-    user: null, 
-    token: ''
+    isLoggedIn: false,
+    user: null
+  }
+ 
+
+  checkLogIn = ()=>{
+    window.fetch('/auth/loggedin')
+    .then(response=>{     
+      console.log(response)
+      return response.json()
+    })
+    .then(data=>{      
+      if (data) {        
+        this.setState({isLoggedIn: data.loggedin, user: data});      
+      }
+      //check if logged in then set state if so.
+    })    
+    return
   }
 
- 
+  componentWillMount(){
+    this.checkLogIn()
+  }
 
-  componentDidMount(){
-   // this.twitter()
- 
-   
-  };  
-
-
-  onSuccess = (response) => {
-    console.log('onSuccess')
-    const token = response.headers.get('x-auth-token');
-   
-    response.json().then(user => {
-      if (token) {
-        this.setState({isAuthenticated: true, user: user, token: token});
-      }
-    });
-  };
-
-  onFailed = (error) => {
-    console.log('onFailed')
-    console.log(error);
-  };
-  
-  
-  render() {   
-    let content = this.state.isAuthenticated ?
-    (
+  render() {    
+    const { classes } = this.props;
+    
+    return (      
       <div>
-        <Navbar />                                 
-          <p>Authenticated</p>          
-          <div>
-            <button onClick={this.logout} className="button" >
-              Log out
-            </button>
-          </div>   
-      </div>
-    ) :
-    (
-        <div>
-          <Navbar />              
 
-           
-            <TwitterLogin loginUrl="https://voting-app-vp.herokuapp.com/auth/twitter/callback"
-              onFailure={this.onFailed} onSuccess={this.onSuccess}
-              requestTokenUrl="https://voting-app-vp.herokuapp.com/auth/twitter"/>        
-                
-        </div>  
+        <Route path="/" render={props=> <Navbar {...props} isLoggedIn={this.state.isLoggedIn} checkLogIn={this.checkLogIn}/>} />
+        <div name="mainView" className={classes.main}>          
+          <Route exact path="/" component={AllPolls}/>  
+          <Route path="/poll/:id" render={props => <SinglePollView {...props} checkLogIn={this.checkLogIn} isLoggedIn={this.state.isLoggedIn}/> }/>  
+          <Route exact path="/createpoll/" component={CreatePoll} />
+          <Route path="/userpolls" render={props => <AuthPollView {...props} checkLogIn={this.checkLogIn} isLoggedIn={this.state.isLoggedIn}/> }  />
+        </div>                    
 
-    )
-
-    return (
-      <div className="App">
-        {content}
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
