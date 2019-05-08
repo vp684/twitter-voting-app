@@ -4,12 +4,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-
 import { withStyles } from '@material-ui/core/styles';
-
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LoginModal from './login/LoginModal'
 import MoreIcon from '@material-ui/icons/MoreVert';
