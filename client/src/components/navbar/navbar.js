@@ -50,7 +50,7 @@ const styles = theme => ({
   },
 });
 
-class PrimarySearchAppBar extends React.Component {
+class Navbar extends React.Component {
   state = {
     anchorEl: null,
     mobileMoreAnchorEl: null
@@ -203,9 +203,9 @@ class PrimarySearchAppBar extends React.Component {
   }
 }
 
-PrimarySearchAppBar.propTypes = {
+Navbar.propTypes = {
   classes: PropTypes.object.isRequired,
   isLoggedIn: PropTypes.bool
 };
 
-export default withStyles(styles)(PrimarySearchAppBar);
+export default withStyles(styles)(Navbar);
