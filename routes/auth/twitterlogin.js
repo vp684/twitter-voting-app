@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 }else{//set values for production mode
   //
-  homeurl = 'https://voting-app-vp.herokuapp.com'//  set to heroku app address
+  homeurl = 'https://twitter-voting-app.herokuapp.com'//  set to heroku app address
 }
 
 function routes(doc){
