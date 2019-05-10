@@ -73,7 +73,6 @@ class Navbar extends React.Component {
   };
 
   logOut = () => {
-    console.log('we logged out')
     window.fetch('/auth/logout').then(()=>{
       this.props.checkLogIn()
     })         

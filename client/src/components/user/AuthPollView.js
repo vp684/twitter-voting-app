@@ -86,17 +86,13 @@ class AuthPollView extends React.Component {
                     userID:data.userId,
                     polls: data.polls
                 })
-                console.log(data)
+               
             })
 
     }
 
-    sharePoll = ()=>{
-        console.log('share poll with modul for link or twitter...')
-    }
 
-    viewPoll =(url)=>{
-        console.log(url)
+    viewPoll =(url)=>{    
         this.props.history.push('/poll/' + url)
     }
 

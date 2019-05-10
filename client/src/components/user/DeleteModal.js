@@ -43,7 +43,6 @@ class DeleteModal extends React.Component {
   };
   
   deletePoll = ()=>{
-      console.log(this.props.uID, this.props.url)
       let pkg = {
           uId: this.props.uId, 
           url: this.props.url
@@ -56,12 +55,11 @@ class DeleteModal extends React.Component {
         body: JSON.stringify(pkg)
     })
     .then(response=>{     
-        console.log(response)
         return response.json()
     })
     .then(data=>{      
         if (data) {        
-            console.log(data)
+     
            this.props.getUserPolls()
            this.handleClose()
         }

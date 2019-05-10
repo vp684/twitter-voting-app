@@ -169,7 +169,6 @@ class CustomListPagination extends React.Component {
     fetchAllPolls = function(){
     window.fetch("/allpolls")
       .then(response=>{     
-        console.log(response)
         return response.json()
       })
       .then(data=>{      

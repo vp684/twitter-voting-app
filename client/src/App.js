@@ -5,7 +5,7 @@ import AllPolls from './components/polls/AllPolls';
 import SinglePollView from './components/polls/SinglePollView';
 import AuthPollView from './components/user/AuthPollView';
 import CreatePoll from './components/user/CreatePoll';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/navbar/NavigationBar';
 
 import { Route } from "react-router-dom";
 
