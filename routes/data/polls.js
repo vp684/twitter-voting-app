@@ -63,9 +63,7 @@ function routes (doc){
                 if(err)return res.send({error: 'Update Error'})
                 console.log(result)
                 if(result) return res.send({message:"poll deleted"})
-            })                        
-          
-
+            })                                  
 
         })    
 
@@ -86,9 +84,7 @@ function routes (doc){
                         if(item.url === req.params.id) return res.send(item)
                 })                    
             }     
-
         })
-
     })    
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
