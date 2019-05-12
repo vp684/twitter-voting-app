@@ -65,10 +65,10 @@ if (process.env.NODE_ENV === 'production') {
         
 }
 
-// Handle React routing, return all requests to React app
-app.get('*', function(req, res) {   
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+// // Handle React routing, return all requests to React app
+// app.get('*', function(req, res) {   
+//     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+// });
 
 //start db and server using async to await db connection result before setting routes.
 (async ()=>{

@@ -143,6 +143,7 @@ class SinglePollView extends React.Component{
         let url = '/getpoll/'+ this.state.url
         fetch(url)
         .then((response)=>{
+            console.log(response)
             return response.json()
         })
         .then((data)=>{
@@ -180,7 +181,7 @@ class SinglePollView extends React.Component{
        const {classes} = this.props
        let choices = this.state.poll.choices
        let pollName = this.state.poll.name  
-       let shareUrl = "https://voting-app-vp.herokuapp.com/poll/" + this.state.url     
+       let shareUrl = "https://twitter-voting-app.herokuapp.com/poll/" + this.state.url     
        return(
         <div className={classes.root}>          
 
