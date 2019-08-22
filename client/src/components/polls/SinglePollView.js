@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import {TwitterShareButton} from 'react-twitter-embed'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import { Button } from '@material-ui/core';
 import {Pie} from 'react-chartjs-2'
 
@@ -18,46 +17,74 @@ const styles = theme =>({
     root:{     
         textAlign:"center"
     }, 
-    paperContainer:{
+    paperContainer: {        
         display:"inline-block", 
         verticalAlign:"middle",
-        width: '50',
-        height: "50",
-        margin: theme.spacing.unit * 3,
-        padding: theme.spacing.unit * 2
+        width: 'auto',      
+        margin: 10,
+        paddingTop: theme.spacing.unit * 3,
+        paddingLeft: theme.spacing.unit * 5,
+        paddingRight: theme.spacing.unit * 5,
+        paddingBottom: theme.spacing.unit * 3
     }, 
+    choicePaper: {
+        width: 'auto',
+        margin: 10     
+    },
     share:{
         padding:10,
         textAlign:'center'
+    }, 
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+    },
+    textBtnContainer: {
+        display: 'flex', 
+        padding: 10,
+        justifyContent: 'center'
+    }, 
+    textContainer: {
+        
+    }, 
+    buttonContainer: {
+        display:'flex'
     }
+
 })
+
+
+
 const chartOpts ={
     maintainAspectRatio: true 
 }
 
 const legendOpts = {
-    display: true,
+    display: false,
     position: 'top',
     fullWidth: true,
     reverse: false,
     labels: {
+        padding: 40, 
+        fontSize: 12, 
+        boxWidth: 50, 
+        usePointStyle: true
       
     }
   };
 
 
 
-class SinglePollView extends React.Component{
-
-   
+class SinglePollView extends React.Component{   
 
     state ={
-        isLoggedIn: this.props.isLoggedIn,     
-        url: this.props.match.params.id ,
+        isLoggedIn: true, //this.props.isLoggedIn,     
+        url: this.props.match.params.id,
         choiceValue:'',
         poll:{
             vote:{}
         },
+        message: null,
         currentChoice:null, 
         chartData: {
             labels: [], //array of Strings
@@ -102,7 +129,10 @@ class SinglePollView extends React.Component{
         })
         .then((data)=>{
             this.getPollData()
-            console.log(data)
+            if (data.err) {               
+                alert("Only one vote per IP")
+            }   
+            
         })
 
     }
@@ -116,42 +146,36 @@ class SinglePollView extends React.Component{
             },
             body: JSON.stringify(this.state)
         })
-        .then((response)=>{
-            console.log(response)
+        .then((response)=>{          
             return response.json()
         })
         .then((data)=>{
 
-            if(data.err) return console.log(data.err)
+            if(data.err) return alert(data.err)
 
             if(data){
                 this.getPollData()
-                console.log(data)                
+                           
             }              
         })
     }
 
     handleChoiceNameChange =()=>event=>{
-        this.setState({choiceValue: event.target.value}, ()=>{
-            console.log(this.state.choiceValue)
-        })
+        this.setState({choiceValue: event.target.value})
   
     }
 
-    getPollData=()=>{
-        console.log(this.props)
+    getPollData=()=>{       
         let url = '/getpoll/'+ this.state.url
         fetch(url)
-        .then((response)=>{
-            console.log(response)
+        .then((response)=>{            
             return response.json()
         })
         .then((data)=>{
 
             if(data.err) return
 
-            if(data){
-                console.log(data)
+            if(data){                
                 let lbls = data.choices.map((itm)=>{
                     return itm.name
                 })
@@ -186,10 +210,10 @@ class SinglePollView extends React.Component{
         <div className={classes.root}>          
 
             <Paper className={classes.paperContainer}>
-                <div>{pollName}</div>
+                <Typography variant="h6">{pollName + ' Poll'}</Typography>
                     
                 <FormControl className={classes.formControl}>
-                    <FormLabel>Choices</FormLabel>
+                    
                     <RadioGroup
                         className={classes.group}            
                         onChange={this.handleChange}                                        
@@ -203,11 +227,11 @@ class SinglePollView extends React.Component{
             </Paper>                                             
             
             <Paper className={classes.paperContainer}>
-                chart
+               <Typography variant="h6">Results</Typography> 
            
                 <Pie data={this.state.chartData} 
-                    width={188}
-                    height={188}
+                    width={250}
+                    height={250}
                     legend={legendOpts}
                     options={chartOpts}>
                 </Pie>   
@@ -226,25 +250,33 @@ class SinglePollView extends React.Component{
                                                          
             </Paper>
 
-            {this.props.isLoggedIn && 
-            <Paper>
-                <form>
-                <Typography>Add a new choice</Typography>
-                <TextField 
-                    id="outlined-name"
-                 
-                    label="Choice"
-                    className={classes.textField}     
-                    onChange={this.handleChoiceNameChange()}
-                    margin="normal"                     
-                    variant="outlined"
-                />
-
-                <Button onClick={this.authenticatedAddChoice}>Add Choice</Button>
+            {this.props.isLoggedIn 
+            }
+            
+            <Paper className={classes.choicePaper}>
+                <Typography variant="h6">Add a new choice</Typography>
+                <form>       
+                    <div className={classes.textBtnContainer}>
+                        <section className={classes.textContainer}>
+                            <TextField 
+                            id="outlined-name"                 
+                            label="Choice"
+                            className={classes.textField}     
+                            onChange={this.handleChoiceNameChange()}                                       
+                            variant="outlined"
+                            />
+                        </section>
+                    
+                        <section className={classes.buttonContainer}> 
+                               <Button  onClick={this.authenticatedAddChoice}>Add Choice</Button>
+                        </section>
+                        
+                    
+                    </div>                       
+               
                 </form>
                 
-            </Paper>}
-            
+            </Paper>
         </div>
        )
    }

@@ -75,7 +75,7 @@ if (process.env.NODE_ENV === 'production') {
         router = require('./routes/routes')(null, doc, app)
 
     }catch(err){
-        console.log(err)      
+       
         router = require('./routes/routes')(err)
     }    
     //add routes      

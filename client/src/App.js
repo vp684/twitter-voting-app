@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import { withStyles } from '@material-ui/core/styles';
-import AllPolls from './components/polls/AllPolls';
 import SinglePollView from './components/polls/SinglePollView';
 import AuthPollView from './components/user/AuthPollView';
 import CreatePoll from './components/user/CreatePoll';
 import Navbar from './components/navbar/NavigationBar';
+import Welcome from './components/welcome/Welcome'
 
 import { Route } from "react-router-dom";
 
@@ -31,7 +31,6 @@ class App extends Component {
   checkLogIn = ()=>{
     window.fetch('/auth/loggedin')
     .then(response=>{     
-      console.log(response)
       return response.json()
     })
     .then(data=>{      
@@ -54,8 +53,8 @@ class App extends Component {
       <div>
 
         <Route path="/" render={props=> <Navbar {...props} isLoggedIn={this.state.isLoggedIn} checkLogIn={this.checkLogIn}/>} />
-        <div name="mainView" className={classes.main}>          
-          <Route exact path="/" component={AllPolls}/>  
+        <div name="mainView" className={classes.main}>  
+          <Route exact path="/" component={Welcome} />
           <Route path="/poll/:id" render={props => <SinglePollView {...props} checkLogIn={this.checkLogIn} isLoggedIn={this.state.isLoggedIn}/> }/>  
           <Route exact path="/createpoll/" component={CreatePoll} />
           <Route path="/userpolls" render={props => <AuthPollView {...props} checkLogIn={this.checkLogIn} isLoggedIn={this.state.isLoggedIn}/> }  />

@@ -57,11 +57,11 @@ function routes (doc){
     router.route('/api/delpoll')
         .delete((req, res)=>{
             if(!req.user) return res.send({err:"need to login first"})
-            console.log(req.body.url)
+            //console.log(req.body.url)
             doc.update({userId: req.user.userId}, { $pull:{ polls: {url: req.body.url} }}, (err, result)=>{
-                console.log(err)
+                //console.log(err)
                 if(err)return res.send({error: 'Update Error'})
-                console.log(result)
+                //console.log(result)
                 if(result) return res.send({message:"poll deleted"})
             })                                  
 
@@ -71,7 +71,7 @@ function routes (doc){
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
     router.route('/getpoll/:id')
     .get((req,res)=>{
-        console.log(req.params.id)
+        //console.log(req.params.id)
         //consider adding validation for pararms.id...
         if(req.params.id.length !== 16) return res.send({error:'invalid url'})
         let query = {'polls.url': req.params.id}
@@ -165,7 +165,7 @@ function routes (doc){
                     if(err) return res.send({error:'Database Error'})
                   
                     if(result) {
-                        console.log('result', result)
+                        //console.log('result', result)
                         return res.send(result)
                     }
                 }) 
